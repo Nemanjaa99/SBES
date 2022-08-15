@@ -1,0 +1,3 @@
+runas /savecred /user:comp ClientApp.exe
+runas /savecred /user:compService ServiceApp.exe
+runas /savecred /user:compSupervisor ClientApp.exe

@@ -1,0 +1,16 @@
+Create cetificate command
+
+
+makecert -n "CN=CompCA" -r -sv CompCA.pvk CompCA.cer
+makecert -sv compService.pvk -iv CompCA.pvk -n "CN=compService" -pe -ic CompCA.cer compService.cer -sr localmachine -ss My -sky exchange
+pvk2pfx.exe /pvk compService.pvk /pi 1111 /spc compService.cer /pfx compService.pfx 
+makecert -sv comp.pvk -iv CompCA.pvk -n "CN=comp , OU=Complainter" -pe -ic CompCA.cer comp.cer -sr localmachine -ss My -sky exchange
+pvk2pfx.exe /pvk comp.pvk /pi 1111 /spc comp.cer /pfx comp.pfx
+makecert -sv compSupervisor.pvk -iv CompCA.pvk -n "CN=compSupervisor , OU=Supervisor" -pe -ic CompCA.cer compSupervisor.cer -sr localmachine -ss My -sky exchange
+pvk2pfx.exe /pvk compSupervisor.pvk /pi 1111 /spc compSupervisor.cer /pfx compSupervisor.pfx
+
+Digitalni sertifikati za korisnika koji salje zalbu
+makecert -sv CompSign.pvk -iv CompCA.pvk -n "CN=comp_sign" -pe -ic CompCA.cer CompSign.cer -sr localmachine -ss My -sky signature
+pvk2pfx.exe /pvk CompSign.pvk /pi 1111 /spc CompSign.cer /pfx compSign.pfx
+
+runas /savecred /user:compService ServiceApp.exe
